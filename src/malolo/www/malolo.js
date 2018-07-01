@@ -2,6 +2,17 @@ fxml_url = 'http://jamesnewman2015:9b73fe05a1917fb7c621d864dc119321c269fe8c@flig
 flight_aware_success=true;
 
 
+
+function SeeRoute() {
+    document.getElementById('line1').innerHTML="Origin: DCA ----> Destination: ORD";
+    document.getElementById('line2').innerHTML="Altitude: 35,000 ft. (Inflight Wi-Fi Approved Altitude)";
+}
+
+function SeeNetwork() {
+    document.getElementById('line1').innerHTML="Your Latency: 500ms";
+    document.getElementById('line2').innerHTML="Your Bandwidth: 0.5Mbps";
+}
+
 //When user inputs flight information, bar graph reflects labels with new data
 function SeeMyFlight() {
     //Hide alert boxes, and show loader 
@@ -90,6 +101,8 @@ function post_data() {
 document.addEventListener('DOMContentLoaded', function(){
     console.log("hello");
     document.getElementById('startTest').onclick=SeeMyFlight; 
+    document.getElementById('route_button').onclick=SeeRoute;
+    document.getElementById('network_button').onclick=SeeNetwork;
     }, false);
 
 //Allow user to press enter when entering flight
