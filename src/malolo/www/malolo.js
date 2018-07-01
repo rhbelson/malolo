@@ -1,4 +1,6 @@
 fxml_url = 'http://jamesnewman2015:9b73fe05a1917fb7c621d864dc119321c269fe8c@flightxml.flightaware.com/json/FlightXML2/';
+flight_aware_success=true;
+
 
 //When user inputs flight information, bar graph reflects labels with new data
 function SeeMyFlight() {
@@ -19,6 +21,14 @@ function SeeMyFlight() {
 
     //Wait appropriate amount of time for loader to disappear
     setTimeout(function () {
+        //Add alert boxes based on whether FlightAware was successful in querying data
+        if (flight_aware_success) {
+            document.getElementById("flight_success").hidden=false;
+            document.getElementById("flight_summary").hidden=false;
+        }
+        else {
+            document.getElementById("flight_failure").hidden=false;
+        }
         document.getElementById("waiting").hidden=true;
         //Visualize changes (By changing which graph appears)
         change(bw_dataset);

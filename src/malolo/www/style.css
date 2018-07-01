@@ -1,7 +1,13 @@
 body{width:90%;margin:auto;min-width:600px;max-width:2000px}
 
-#malolo_explain_button {
+.jumbotron {
   width:100%;
+}
+
+
+#malolo_explain_button {
+  margin: auto;
+  width: 99%
 }
 
 #qrcode {
@@ -15,7 +21,7 @@ body{width:90%;margin:auto;min-width:600px;max-width:2000px}
 
 .waiting {
   position:relative;
-  top:25px;
+  top:5px;
   -webkit-animation: spin 2s linear infinite;
   -moz-animation: spin 2s linear infinite;
   -ms-animation: spin 2s linear infinite;
