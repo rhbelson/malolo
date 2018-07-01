@@ -72,10 +72,10 @@
             <input type="button" id="startTest" value="Go" style="background-color:#009000;cursor:pointer;width:100px" class="btn btn-lg button-primary">
           </div>
         </form>
-        <div hidden="true" id="flight_success" class="alert alert-success" style="text-align:center;">
+        <div hidden="true" id="flight_success" class="alert alert-success fade in alert-dismissible" style="text-align:center;">
       <strong>Success!</strong> Malolo was able to retrieve your flight credentials.
         </div>
-        <div hidden="true" id="flight_failure" class="alert alert-danger">
+        <div hidden="true" id="flight_failure" class="alert alert-danger alert-dismissible fade in">
   <strong>Sorry!</strong> Malolo is unable to retrieve your flight credentials.
 </div>
       </div>
@@ -374,19 +374,28 @@
 
 
 <div hidden="true" id="flight_summary" class="jumbotron">
+  <div class="btn-group btn-group-justified">
+  <a id="network_button" class="btn btn-primary">Network<span class="badge">1</span></a>
+  <a id="route_button" class="btn btn-primary">Route</a>
+  <a id="more_button" class="btn btn-primary">More</a>
+</div>
 <h2>Flight Summary</h2>
 <h4>Origin: DCA ----> Destination: ORD</h4>
 <h4>Altitude: 35,000 ft. (Inflight Wi-Fi Approved Altitude)</h4>
 <h4>Your Latency: 500ms</h4>
 <h4>Your Bandwidth: 0.5Mbps</h4>
-<h4>Overall Malolo Ranking: 95%</h4>
+<h4>Overall Malolo Ranking: 75%</h4>
+<div class="progress" style="width:100%">
+    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:75%;background-color:green">
+    </div>
+  </div>
 </div>
+
   <img id="qrcode" height="100px" src="frame.png"><h3 id="qrtext">Scan the QR code to find out more about work AquaLab is doing to improve your inflight Wi-Fi.</h3>
 
 
 
-
-<div class="footer" style="text-align:center;">
+<div class="footer" visibility="true" style="text-align:center;">
   <p>Want to learn more? Follow us on our social media channels or tell your friends about Malolo! <a href="https://twitter.com/intent/tweet?button_hashtag=inflight&ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-show-count="false">Tweet #inflight</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
 
   <a href="#" class="fa fa-facebook"></a>

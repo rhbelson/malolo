@@ -4,7 +4,10 @@ flight_aware_success=true;
 
 //When user inputs flight information, bar graph reflects labels with new data
 function SeeMyFlight() {
+    //Hide alert boxes, and show loader 
     document.getElementById("waiting").hidden=false;
+    document.getElementById("flight_success").hidden=true;
+    document.getElementById("flight_summary").hidden=true;
     // document.getElementById("startTest").visibility=false;
 	console.log("MyFlight function called")
 
@@ -34,13 +37,12 @@ function SeeMyFlight() {
         change(bw_dataset);
         // document.getElementById("startTest").hidden=false;
 
-    }, 5000);
+        //How long should Malolo wait before it loads (set to half a second for testing purposes)
+    }, 500);
 	
    
 
 }
-
-
 
 
 //When measurements come in from Go coroutines, adjust values accordingly, or post to servers
@@ -65,8 +67,6 @@ function post_data() {
         }).done(function() { console.log('Request done!'); })
         .fail(function(jqxhr, settings, ex) { console.log('failed, ' + ex); });
     }
-
-
 
 //At some point, add valid flight checking (currently, Javascript is browser is blocking request for security reasons)
     //More info: https://stackoverflow.com/questions/20035101/why-does-my-javascript-get-a-no-access-control-allow-origin-header-is-present
@@ -107,3 +107,4 @@ window.onload = function () {
       }
     });        
 }
+

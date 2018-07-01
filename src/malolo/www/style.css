@@ -1,9 +1,16 @@
 body{width:90%;margin:auto;min-width:600px;max-width:2000px}
 
-.jumbotron {
+
+#flight_summary {
+  margin:auto;
+  text-align: center;
+  padding-top: 5px;
   width:100%;
 }
 
+.jumbotron {
+  width:100%;
+}
 
 #malolo_explain_button {
   margin: auto;
