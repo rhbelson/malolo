@@ -4,13 +4,25 @@ flight_aware_success=true;
 
 
 function SeeRoute() {
-    document.getElementById('line1').innerHTML="Origin: DCA ----> Destination: ORD";
-    document.getElementById('line2').innerHTML="Altitude: 35,000 ft. (Inflight Wi-Fi Approved Altitude)";
+    $("#line1").fadeOut(1000);
+    $("#line2").fadeOut(1000);
+    setTimeout(function () {
+        document.getElementById('line1').innerHTML="Origin: DCA ----> Destination: ORD";
+        document.getElementById('line2').innerHTML="Altitude: 35,000 ft. (Inflight Wi-Fi Approved Altitude)";
+         }, 1000);
+    $("#line1").fadeIn(4000);
+    $("#line2").fadeIn(4000);
 }
 
 function SeeNetwork() {
-    document.getElementById('line1').innerHTML="Your Latency: 500ms";
-    document.getElementById('line2').innerHTML="Your Bandwidth: 0.5Mbps";
+    $("#line1").fadeOut(1000);
+    $("#line2").fadeOut(1000);
+    setTimeout(function () {
+        document.getElementById('line1').innerHTML="Your Latency: 500ms";
+        document.getElementById('line2').innerHTML="Your Bandwidth: 0.5Mbps";
+        }, 1000);
+    $("#line1").fadeIn(4000);
+    $("#line2").fadeIn(4000);
 }
 
 //When user inputs flight information, bar graph reflects labels with new data
