@@ -3,6 +3,18 @@ flight_aware_success=true;
 
 
 
+
+window.setInterval(function(){
+ /// call your function here
+  $.get("http://localhost:42000/dynamic", function(data, status){
+           console.log("Data: " + data + "\nStatus: " + status);
+           console.log("More data!");
+       });
+
+}, 5000);
+   
+
+
 function SeeRoute() {
     $("#line1").fadeOut(1000);
     $("#line2").fadeOut(1000);

@@ -17,6 +17,7 @@ import (
 	"os/signal"
 	"path"
 	"path/filepath"
+	"sync"
 	"syscall"
 	"time"
 
@@ -60,6 +61,9 @@ var systemLogger service.Logger
 
 // shutdown_signal_chan is the channel for incoming control signals.
 var shutdown_signal_chan chan os.Signal
+
+var dataMutex = &sync.Mutex{}
+var data map[string]string
 
 func init() {
 	// init is called before main when starting the program.
@@ -138,7 +142,9 @@ func (p *Program) Start(s service.Service) error {
 	return nil
 }
 func handler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("42"))
+	dataMutex.Lock()
+	w.Write([]byte(data["ping"]))
+	dataMutex.Unlock()
 }
 // run is where you start your actual program. This function should block while
 // the application is running and return upon termination or completion.
@@ -149,7 +155,7 @@ func (p *Program) run() {
 	aqua := aquarium.StartAquarium(appConfig)
 
 	go pingLauncher(aqua)
-
+	data = make(map[string]string)
 	http.Handle("/", http.FileServer(rice.MustFindBox("www").HTTPBox()))
 	http.HandleFunc("/dynamic", handler)
 	//http.ListenAndServe(":8080", nil)
@@ -177,11 +183,17 @@ func (p *Program) Stop(s service.Service) error {
 
 // pingLauncher is a simple example of a goroutine that launches a ping
 // measurement ever 10 + rand * 5 seconds.
+
 func pingLauncher(aqua aquarium.Aquarium) {
 	for {
 		select {
 		case <-time.After(10*time.Second + time.Second*time.Duration(rand.Int63n(5))):
-			aqua.ProbeMon.SubmitExperiment <- &probes.PingExperiment{"google.com", nil}
+			result := make(chan *probes.PingResult)
+			aqua.ProbeMon.SubmitExperiment <- &probes.PingExperiment{"google.com", result}
+			temp := (<-result).Stdout
+			dataMutex.Lock()
+			data["ping"] = temp
+			dataMutex.Unlock()
 		}
 	}
 }
