@@ -25,7 +25,7 @@ import (
 	"bitbucket.org/zbisch/aquarium/app"
 	"bitbucket.org/zbisch/aquarium/probes"
 
-
+	
 	"github.com/GeertJohan/go.rice"
 	"github.com/kardianos/osext"
 	"github.com/kardianos/service"
@@ -155,6 +155,7 @@ func (p *Program) run() {
 	aqua := aquarium.StartAquarium(appConfig)
 
 	go pingLauncher(aqua)
+	go tracerouteLauncher(aqua)
 	data = make(map[string]string)
 	http.Handle("/", http.FileServer(rice.MustFindBox("www").HTTPBox()))
 	http.HandleFunc("/dynamic", handler)
@@ -190,6 +191,21 @@ func pingLauncher(aqua aquarium.Aquarium) {
 		case <-time.After(10*time.Second + time.Second*time.Duration(rand.Int63n(5))):
 			result := make(chan *probes.PingResult)
 			aqua.ProbeMon.SubmitExperiment <- &probes.PingExperiment{"google.com", result}
+			temp := (<-result).Stdout
+			dataMutex.Lock()
+			data["ping"] = temp
+			dataMutex.Unlock()
+		}
+	}
+}
+
+
+func tracerouteLauncher(aqua aquarium.Aquarium) {
+	for {
+		select {
+		case <-time.After(10*time.Second + time.Second*time.Duration(rand.Int63n(5))):
+			result := make(chan *probes.TracerouteResult)
+			aqua.ProbeMon.SubmitExperiment <- &probes.TracerouteExperiment{"google.com", result}
 			temp := (<-result).Stdout
 			dataMutex.Lock()
 			data["ping"] = temp

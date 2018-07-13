@@ -1,6 +1,7 @@
 fxml_url = 'http://jamesnewman2015:9b73fe05a1917fb7c621d864dc119321c269fe8c@flightxml.flightaware.com/json/FlightXML2/';
 flight_aware_success=true;
 
+malolo_data="";
 
 
 
@@ -9,10 +10,22 @@ window.setInterval(function(){
   $.get("http://localhost:42000/dynamic", function(data, status){
            console.log("Data: " + data + "\nStatus: " + status);
            console.log("More data!");
+           malolo_data=data;
+           parseIncomingMeasurements();
        });
 
 }, 5000);
    
+
+function parseIncomingMeasruements() {
+    if (malolo_data.includes("loss")) {
+        beg=malolo_data.indexOf("packets received,");
+        end=malolo_data.indexOf("%");
+        loss=malolo_data[beg+1:end]
+        console.log(loss)
+        loss_dataset[4].value=parseInt(loss);
+    }
+}
 
 
 function SeeRoute() {
