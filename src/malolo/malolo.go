@@ -25,7 +25,7 @@ import (
 	"bitbucket.org/zbisch/aquarium/app"
 	"bitbucket.org/zbisch/aquarium/probes"
 
-	
+	// "github.com/surol/speedtest-cli"
 	"github.com/GeertJohan/go.rice"
 	"github.com/kardianos/osext"
 	"github.com/kardianos/service"
@@ -156,6 +156,7 @@ func (p *Program) run() {
 
 	go pingLauncher(aqua)
 	go tracerouteLauncher(aqua)
+	go speedtestLauncher(aqua)
 	data = make(map[string]string)
 	http.Handle("/", http.FileServer(rice.MustFindBox("www").HTTPBox()))
 	http.HandleFunc("/dynamic", handler)
@@ -213,3 +214,19 @@ func tracerouteLauncher(aqua aquarium.Aquarium) {
 		}
 	}
 }
+
+func speedtestLauncher(aqua aquarium.Aquarium) {
+	for {
+		select {
+		case <-time.After(20*time.Second + time.Second*time.Duration(rand.Int63n(15))):
+			result := make(chan *probes.SpeedtestResult)
+			aqua.ProbeMon.SubmitExperiment <- &probes.SpeedtestExperiment{"google.com", result}
+			temp := (<-result).Stdout
+			dataMutex.Lock()
+			data["ping"] = temp
+			dataMutex.Unlock()
+		}
+	}
+}
+
+

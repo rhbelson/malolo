@@ -21,8 +21,8 @@ function parseIncomingMeasruements() {
     if (malolo_data.includes("loss")) {
         beg=malolo_data.indexOf("packets received,");
         end=malolo_data.indexOf("%");
-        loss=malolo_data[beg+1:end]
-        console.log(loss)
+        loss=malolo_data[beg+1:end];
+        console.log(loss);
         loss_dataset[4].value=parseInt(loss);
     }
 }
