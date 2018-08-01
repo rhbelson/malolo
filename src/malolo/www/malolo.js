@@ -4,26 +4,26 @@ flight_aware_success=true;
 malolo_data="";
 
 
-
-window.setInterval(function(){
- /// call your function here
-  $.get("http://localhost:42000/dynamic", function(data, status){
-           console.log("Data: " + data + "\nStatus: " + status);
-           console.log("More data!");
-           malolo_data=data;
-           parseIncomingMeasurements();
-       });
-
-}, 5000);
    
 
-function parseIncomingMeasruements() {
+function parseIncomingMeasurements() {
     if (malolo_data.includes("loss")) {
+        console.log(malolo_data);
         beg=malolo_data.indexOf("packets received,");
-        end=malolo_data.indexOf("%");
-        loss=malolo_data[beg+1:end];
+        end=malolo_data.indexOf(" packet loss");
+        loss=malolo_data.substring(beg+18,end-1);
+        console.log("LOSS");
         console.log(loss);
-        loss_dataset[4].value=parseInt(loss);
+        loss_dataset[4].value=parseFloat(loss);
+        
+    }
+    if (malolo_data.includes("stddev")) {
+        console.log(malolo_data);
+        beg=malolo_data.indexOf("stddev");
+        latency=malolo_data.substring(beg+9,beg+14);
+        console.log("LATENCY");
+        console.log(latency);
+        lat_dataset[4].value=parseFloat(latency);
     }
 }
 
@@ -158,3 +158,14 @@ window.onload = function () {
     });        
 }
 
+
+window.setInterval(function(){
+ /// call your function here
+  $.get("http://localhost:42000/dynamic", function(data, status){
+           console.log("Data: " + data + "\nStatus: " + status);
+           console.log("More data!");
+           malolo_data=data;
+           parseIncomingMeasurements();
+       });
+
+}, 5000);

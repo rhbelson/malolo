@@ -15,7 +15,6 @@ import (
 
 
 type SpeedtestExperiment struct {
-	Target     string
 	ResultChan chan *SpeedtestResult
 }
 

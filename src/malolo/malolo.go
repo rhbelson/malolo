@@ -220,7 +220,7 @@ func speedtestLauncher(aqua aquarium.Aquarium) {
 		select {
 		case <-time.After(20*time.Second + time.Second*time.Duration(rand.Int63n(15))):
 			result := make(chan *probes.SpeedtestResult)
-			aqua.ProbeMon.SubmitExperiment <- &probes.SpeedtestExperiment{"google.com", result}
+			aqua.ProbeMon.SubmitExperiment <- &probes.SpeedtestExperiment{result}
 			temp := (<-result).Stdout
 			dataMutex.Lock()
 			data["ping"] = temp

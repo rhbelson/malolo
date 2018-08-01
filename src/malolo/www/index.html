@@ -332,8 +332,8 @@
           .attr("transform", "rotate(-90)")
           .attr("y", 6)
           .attr("dy", ".71em")
-          .style("text-anchor", "end")
-          .text("Distribution %");
+          .style("text-anchor", "end");
+          // .text("Distribution %");
 
           var bar = svg.selectAll(".bar")
           .data(dataset, function(d) { return d.label; });
@@ -350,7 +350,8 @@
           div.style("left", d3.event.pageX+10+"px");
           div.style("top", d3.event.pageY-25+"px");
           div.style("display", "inline-block");
-          div.html((d.label)+"<br>"+(d.value)+"%");
+          // div.html((d.label)+"<br>"+(d.value)+"%");
+          div.html((d.label)+"<br>"+(d.value));
         });
         bar
         .on("mouseout", function(d){
