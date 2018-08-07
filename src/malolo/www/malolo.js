@@ -1,10 +1,9 @@
 fxml_url = 'http://jamesnewman2015:9b73fe05a1917fb7c621d864dc119321c269fe8c@flightxml.flightaware.com/json/FlightXML2/';
 flight_aware_success=true;
-
 malolo_data="";
+parsedLat=false;
 
 
-   
 
 function parseIncomingMeasurements() {
     if (malolo_data.includes("loss")) {
@@ -15,6 +14,11 @@ function parseIncomingMeasurements() {
         console.log("LOSS");
         console.log(loss);
         loss_dataset[4].value=parseFloat(loss);
+        // var d = new Date();
+        // var n = d.getTime();
+        // var newLoss = [{time: n, y:parseFloat(loss)}];
+        // console.log(newLoss);
+        // myChart.push(parseFloat(newLoss));
         
     }
     if (malolo_data.includes("stddev")) {
@@ -24,6 +28,12 @@ function parseIncomingMeasurements() {
         console.log("LATENCY");
         console.log(latency);
         lat_dataset[4].value=parseFloat(latency);
+        var d = new Date();
+        var n = d.getTime();
+        var newLat = [{time: n, y:parseFloat(latency)}];
+        console.log(newLat);
+        myChart.push(newLat);
+        parsedLat=true;
     }
 }
 
@@ -50,6 +60,22 @@ function SeeNetwork() {
     $("#line2").fadeIn(4000);
 }
 
+
+function SeeMap() {
+    document.getElementById("map_jumbo").hidden=false;
+    document.getElementById("chart_jumbo").hidden=true;
+}
+
+function SeePerformance() {
+    document.getElementById("chart_jumbo").hidden=true;
+    document.getElementById("map_jumbo").hidden=true;
+}
+
+function SeeRealTime() {
+    document.getElementById("chart_jumbo").hidden=false;
+    document.getElementById("map_jumbo").hidden=true;
+}
+
 //When user inputs flight information, bar graph reflects labels with new data
 function SeeMyFlight() {
     //Hide alert boxes, and show loader 
@@ -57,7 +83,7 @@ function SeeMyFlight() {
     document.getElementById("flight_success").hidden=true;
     document.getElementById("flight_summary").hidden=true;
     // document.getElementById("startTest").visibility=false;
-	console.log("MyFlight function called")
+	console.log("MyFlight function called");
 
 
     //Process Incoming Data
@@ -138,8 +164,9 @@ function post_data() {
 document.addEventListener('DOMContentLoaded', function(){
     console.log("hello");
     document.getElementById('startTest').onclick=SeeMyFlight; 
-    document.getElementById('route_button').onclick=SeeRoute;
-    document.getElementById('network_button').onclick=SeeNetwork;
+    document.getElementById('network_performance_button').onclick=SeePerformance;
+    document.getElementById('real_time_button').onclick=SeeRealTime;
+    document.getElementById('map_button').onclick=SeeMap;
     }, false);
 
 //Allow user to press enter when entering flight
@@ -159,6 +186,7 @@ window.onload = function () {
 }
 
 
+//Continue to pull data from probes
 window.setInterval(function(){
  /// call your function here
   $.get("http://localhost:42000/dynamic", function(data, status){
@@ -169,3 +197,30 @@ window.setInterval(function(){
        });
 
 }, 5000);
+
+
+
+//Continue to update charts
+window.setInterval(function(){
+ /// call your function here
+  if (parsedLat) {
+    console.log("adding to chart");
+    var d = new Date();
+    var n = d.getTime();
+    var newLat = [{time: n, y:parseFloat(latency)}];
+    console.log(newLat);
+    myChart.push(newLat);
+  }
+  // else {
+  //   console.log("adding to chart");
+  //   var d = new Date();
+  //   var n = d.getTime();
+  //   var newLat = [{time: n, y:0}];
+  //   console.log(newLat);
+  //   myChart.push(newLat);
+  // }
+
+}, 500);
+
+
+
