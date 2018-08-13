@@ -156,7 +156,7 @@ func (p *Program) run() {
 
 	go pingLauncher(aqua)
 	go tracerouteLauncher(aqua)
-	go speedtestLauncher(aqua)
+	// go speedtestLauncher(aqua)
 	data = make(map[string]string)
 	http.Handle("/", http.FileServer(rice.MustFindBox("www").HTTPBox()))
 	http.HandleFunc("/dynamic", handler)

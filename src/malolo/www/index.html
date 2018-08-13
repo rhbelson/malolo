@@ -136,13 +136,17 @@
 </div>
 
 
-    
+<div id="performance_title">
   <h3><center>Understand Your Performance Metrics</center></h3>
     <center><form>
     <label><input type="radio" name="dataset" id="lat_button" value="total" checked> Average Latency (ms)</label>
     <label><input type="radio" name="dataset" id="bw_button" value="option1"> Average Downstream Bandwidth (Mbps)</label>
     <label><input type="radio" name="dataset" id="loss_button" value="option2">Avg Loss (%)</label>
     </form></center>
+</div>
+
+
+
     <script>
     d3.select("input[value=\"total\"]").property("checked", true);
 
@@ -220,13 +224,17 @@
             var svg = d3.select("body").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
+            .attr("id","chart_svg")
+            .attr("visibility","visible")
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 
             svg.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
+
 
             change(lat_dataset);
 

@@ -64,16 +64,22 @@ function SeeNetwork() {
 function SeeMap() {
     document.getElementById("map_jumbo").hidden=false;
     document.getElementById("chart_jumbo").hidden=true;
+    document.getElementById("chart_svg").style.display="none";
+    document.getElementById("performance_title").hidden=true;
 }
 
 function SeePerformance() {
     document.getElementById("chart_jumbo").hidden=true;
     document.getElementById("map_jumbo").hidden=true;
+    document.getElementById("chart_svg").style.display="block";
+    document.getElementById("performance_title").hidden=false;
 }
 
 function SeeRealTime() {
     document.getElementById("chart_jumbo").hidden=false;
     document.getElementById("map_jumbo").hidden=true;
+    document.getElementById("chart_svg").style.display="none";
+    document.getElementById("performance_title").hidden=true;
 }
 
 //When user inputs flight information, bar graph reflects labels with new data
@@ -81,7 +87,7 @@ function SeeMyFlight() {
     //Hide alert boxes, and show loader 
     document.getElementById("waiting").hidden=false;
     document.getElementById("flight_success").hidden=true;
-    document.getElementById("flight_summary").hidden=true;
+    // document.getElementById("flight_summary").hidden=true;
     // document.getElementById("startTest").visibility=false;
 	console.log("MyFlight function called");
 
@@ -92,6 +98,27 @@ function SeeMyFlight() {
     lat_dataset[4].label=flight;
     bw_dataset[4].label=flight;
     loss_dataset[4].label=flight;
+
+
+    //At some point, add valid flight checking (currently, Javascript is browser is blocking request for security reasons)
+    //More info: https://stackoverflow.com/questions/20035101/why-does-my-javascript-get-a-no-access-control-allow-origin-header-is-present
+     $.post("http://localhost:8000/get_inflightinfo.php",
+      { dataType: 'jsonp',
+        ident: flight },
+      function(data, status){
+         console.log(data);
+         //Find Origin and Destination
+         // console.log(data.toString());
+         // string_data=data.toString();
+         // var org1=parseInt(data.search("origin"));
+         // console.log(data[org1+10]+data[org1+11]+data[org1+12]);
+         // var dest1=data.search("destination");
+         // console.log(data[dest1+15]+data[dest1+16]+data[dest1+17]);
+         // oldorigin=String(data[org1+9]+data[org1+10]+data[org1+11]+data[org1+12]);
+         // olddestination=String(data[dest1+14]+data[dest1+15]+data[dest1+16]+data[dest1+17]);
+    });
+
+
     
     //Update Changes
     change(lat_dataset);
@@ -101,7 +128,7 @@ function SeeMyFlight() {
         //Add alert boxes based on whether FlightAware was successful in querying data
         if (flight_aware_success) {
             document.getElementById("flight_success").hidden=false;
-            document.getElementById("flight_summary").hidden=false;
+            // document.getElementById("flight_summary").hidden=false;
         }
         else {
             document.getElementById("flight_failure").hidden=false;
@@ -142,23 +169,6 @@ function post_data() {
         .fail(function(jqxhr, settings, ex) { console.log('failed, ' + ex); });
     }
 
-//At some point, add valid flight checking (currently, Javascript is browser is blocking request for security reasons)
-    //More info: https://stackoverflow.com/questions/20035101/why-does-my-javascript-get-a-no-access-control-allow-origin-header-is-present
-    //  $.post("http://hinckley.cs.northwestern.edu/~jtn609/flightaware/get_inflightinfo.php",
-    //   { ident: flight },
-    //   function(data, status){
-    //      console.log(data);
-    //      //Find Origin and Destination
-    //      console.log(data.toString());
-    //      string_data=data.toString();
-    //      var org1=parseInt(data.search("origin"));
-    //      console.log(data[org1+10]+data[org1+11]+data[org1+12]);
-    //      var dest1=data.search("destination");
-    //      console.log(data[dest1+15]+data[dest1+16]+data[dest1+17]);
-    //      oldorigin=String(data[org1+9]+data[org1+10]+data[org1+11]+data[org1+12]);
-    //      olddestination=String(data[dest1+14]+data[dest1+15]+data[dest1+16]+data[dest1+17]);
-    // });
-// }
 
 //Add Triggerable Buttons
 document.addEventListener('DOMContentLoaded', function(){
